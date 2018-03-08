@@ -1,33 +1,29 @@
-package model;
+package model.entity;
 
-public class Stack<Type> extends LIFO {
-    public Stack(){
+public class Queue<Type> extends FIFO<Type> {
+    public Queue(){
         this.last = null;
         this.length = 0;
     }
 
-    public Element<Type> head;
-    private Element<Type> last;
-    private int length;
 
 
     @Override
     public int getLength() {
-        return 0;
-    }
-
-    public Type getLast(){
-        return this.last.getInfo();
+        return this.length;
     }
 
     @Override
     public Type pop() {
-        //todo: solve the way, when stack is empty
-
+        if(this.length == 0) return null;
+        while (this.last.next.next != null){
+            this.last = this.last.next;
+        }
         Element<Type> temp = new Element<>();
-        temp.setInfo(this.last.getInfo());
-        this.last = this.last.next;
-        this.head = this.last;
+        temp.setInfo(this.last.next.getInfo());
+        this.last.next = null;
+        this.last = this.head;
+        this.length--;
         return temp.getInfo();
     }
 
@@ -37,20 +33,21 @@ public class Stack<Type> extends LIFO {
     }
 
     @Override
-    public void push(Object element) {
+    public void push(Type element) {
         if(this.last == null){
             this.last = new Element<>();
-            this.last.setInfo((Type) element);
+            this.last.setInfo(element);
             this.last.next = null;
             this.head = this.last;
         }
         else{
             Element<Type> temp = new Element<>();
             temp.next = this.last;
-            temp.setInfo((Type) element);
+            temp.setInfo(element);
             this.last = temp;
             this.head = temp;
         }
+        this.length++;
     }
 
     public void printAll(){
@@ -61,9 +58,10 @@ public class Stack<Type> extends LIFO {
         this.last = this.head;
     }
 
+
     public static void main(String[] args) {
         Integer i = 1;
-        Stack<Integer> st = new Stack<>();
+        Queue<Integer> st = new Queue<>();
         for (int j = 0; j++ < 10;) {
             st.push(i++);
         }
@@ -72,5 +70,4 @@ public class Stack<Type> extends LIFO {
         System.out.println();
         st.printAll();
     }
-
 }

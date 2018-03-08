@@ -1,4 +1,4 @@
-package model;
+package model.entity;
 
 public abstract class CollectionClass<Type> implements Collection {
     public abstract int getLength();
